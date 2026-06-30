@@ -9,12 +9,10 @@ from src.utils import save_training_indices
 from config.config import BATCH_SIZE, EPOCHS, IMAGE_SIZE
 
 def main():
-    # Setup
     base_dir = './data/dataset_32'
     checkpoint_path = f'{base_dir}/checkpoint/model_epoch_{{epoch}}.h5'
     checkpoint_dir = os.path.dirname(checkpoint_path)
     
-    # Callbacks
     checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
         checkpoint_path, save_weights_only=False, save_freq='epoch', verbose=1
     )
@@ -26,7 +24,6 @@ def main():
         monitor='val_loss', factor=0.2, patience=2, min_lr=0.0, verbose=1
     )
     
-    # Load data
     data_loader = DataLoader(
         img_path='./data/dataset_32/img/*.png',
         true_holo_path='./data/dataset_32/holo/*.png',
@@ -38,11 +35,9 @@ def main():
     train_ds, test_ds, train_indices, test_indices = data_loader.get_datasets(BATCH_SIZE)
     save_training_indices(train_indices, test_indices)
     
-    # Model
     model = Unet(image_size=IMAGE_SIZE)
     model.compile(optimizer=keras.optimizers.Nadam(learning_rate=0.001), loss='mse', metrics=[])
     
-    # Train
     model.fit(
         train_ds,
         validation_data=test_ds,
@@ -50,7 +45,6 @@ def main():
         callbacks=[terminate_on_NaN, checkpoint_callback, early_stopping, reduce_lr]
     )
     
-    # Save final model
     model.save(f'{base_dir}/model_final.h5')
     print("Training complete!")
 

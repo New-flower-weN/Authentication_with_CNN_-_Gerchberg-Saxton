@@ -1,16 +1,13 @@
 import sys
 import tensorflow as tf
-import numpy as np
 import matplotlib.pyplot as plt
 sys.path.append('..')
 from src.data_loader import DataLoader
 from config.config import BATCH_SIZE
 
 def main():
-    # Load model
     model = tf.keras.models.load_model('./data/dataset_32/model_final.h5')
     
-    # Load test data
     data_loader = DataLoader(
         img_path='./data/dataset_32/img/*.png',
         true_holo_path='./data/dataset_32/holo/*.png',
@@ -21,11 +18,9 @@ def main():
     
     _, test_ds, _, _ = data_loader.get_datasets(BATCH_SIZE)
     
-    # Evaluate
     loss = model.evaluate(test_ds, verbose=1)
     print(f"Test Loss: {loss}")
     
-    # Visualize predictions
     sample_batch = next(iter(test_ds))
     predictions = model.predict(sample_batch[0])
     
