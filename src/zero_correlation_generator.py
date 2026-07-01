@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 from tqdm import tqdm
-from config.config import N, ps, lmbd, z
+from config.config import N, ps, lmbd, z, PHASE_PATH, BASE_PATH
 
 class ZeroCorrelationGenerator:
     def __init__(self, N=N, ps=ps, lmbd=lmbd, z=z):
@@ -16,7 +16,7 @@ class ZeroCorrelationGenerator:
         v = ps * Y
         self.wave_front = (1j * np.pi / (lmbd * z)) * (u * u + v * v)
         
-        self.phase = cv2.imread('./data/dataset_32/phase_1.png', cv2.IMREAD_GRAYSCALE)
+        self.phase = cv2.imread(f'{PHASE_PATH}', cv2.IMREAD_GRAYSCALE)
         self.phase = self.phase - np.mean(self.phase)
         self.phase = self.phase / np.std(self.phase)
         self.phase = self.phase.flatten()

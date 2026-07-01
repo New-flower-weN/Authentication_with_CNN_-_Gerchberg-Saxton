@@ -42,7 +42,7 @@ class HologramGenerator:
         img_amp = cp.sqrt(img_arr)
         phase = self.initial_phase
         
-        for i in range(iterations):
+        for _ in range(iterations):
             complex_amp = 1 * cp.exp(1j * cp.asanyarray(phase))
             freq_img = fftshift(fft2(ifftshift(complex_amp * cp.exp(self.cp_wave_front), 
                                                 axes=(1,2)), axes=(1,2)), axes=(1,2))

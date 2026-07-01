@@ -46,7 +46,6 @@ def main():
     )
     
     model.save(f'{base_dir}/model_final.h5')
-    print("Training complete!")
 
 if __name__ == "__main__":
     main()
